@@ -1,0 +1,46 @@
+18.Write a program to search a given element in an array using Linear Search.
+
+
+#include <iostream>
+using namespace std;
+
+// Function to perform Linear Search
+int linearSearch(int arr[], int n, int target) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == target) {
+            return i;  // Return the index of the target element if found
+        }
+    }
+    return -1;  // Return -1 if the target element is not found
+}
+
+int main() {
+    int n, target;
+
+    // Input size of array
+    cout << "Enter the number of elements in the array: ";
+    cin >> n;
+
+    int arr[n];
+
+    // Input array elements
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    // Input target element to search
+    cout << "Enter the element to search for: ";
+    cin >> target;
+
+    // Call linearSearch function
+    int index = linearSearch(arr, n, target);
+
+    if (index != -1) {
+        cout << "Element " << target << " found at index " << index << endl;
+    } else {
+        cout << "Element " << target << " not found in the array." << endl;
+    }
+
+    return 0;
+}

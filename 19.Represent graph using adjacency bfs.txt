@@ -1,0 +1,93 @@
+19.Represent graph using adjacency list/adjacency matrix and perform Breath First Search.
+
+#include <iostream>
+#include <list>
+#include <queue>
+using namespace std;
+
+// Class to represent a graph using adjacency list
+class Graph {
+private:
+    int V;               // Number of vertices
+    list<int>* adj;      // Pointer to an array of adjacency lists
+
+public:
+    // Constructor
+    Graph(int V) {
+        this->V = V;
+        adj = new list<int>[V];
+    }
+
+    // Function to add an edge to the graph
+    void addEdge(int v, int w) {
+        adj[v].push_back(w);  // Add w to v’s list
+    }
+
+    // Function to perform BFS traversal starting from a given source vertex
+    void BFS(int start) {
+        // Create a visited array to keep track of visited vertices
+        bool* visited = new bool[V];
+
+        // Initially mark all vertices as not visited
+        for (int i = 0; i < V; i++) {
+            visited[i] = false;
+        }
+
+        // Create a queue for BFS
+        queue<int> q;
+
+        // Mark the start node as visited and enqueue it
+        visited[start] = true;
+        q.push(start);
+
+        cout << "Breadth First Search starting from vertex " << start << ":\n";
+
+        while (!q.empty()) {
+            // Dequeue a vertex from queue
+            int v = q.front();
+            q.pop();
+
+            cout << v << " ";  // Print the dequeued vertex
+
+            // Get all adjacent vertices of the dequeued vertex
+            // If an adjacent vertex has not been visited, mark it visited and enqueue it
+            for (auto i = adj[v].begin(); i != adj[v].end(); ++i) {
+                if (!visited[*i]) {
+                    visited[*i] = true;
+                    q.push(*i);
+                }
+            }
+        }
+
+        cout << endl;
+    }
+};
+
+int main() {
+    int V, E, u, v, start;
+    
+    // Input the number of vertices and edges
+    cout << "Enter the number of vertices: ";
+    cin >> V;
+    cout << "Enter the number of edges: ";
+    cin >> E;
+
+    // Create a graph object
+    Graph g(V);
+
+    // Input the edges
+    cout << "Enter " << E << " edges (u v) where u and v are vertex numbers (0-based indexing):\n";
+    for (int i = 0; i < E; i++) {
+        cin >> u >> v;
+        g.addEdge(u, v);  // Add the edge to the graph
+    }
+
+    // Input the starting vertex for BFS
+    cout << "Enter the starting vertex for BFS: ";
+    cin >> start;
+
+    // Perform BFS starting from the given vertex
+    g.BFS(start);
+
+    return 0;
+}

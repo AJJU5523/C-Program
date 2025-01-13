@@ -1,0 +1,93 @@
+15.Implement circular linked list using array
+
+#include <iostream>
+using namespace std;
+
+#define MAX_SIZE 5  // Define the maximum size of the circular linked list
+
+class CircularLinkedList {
+private:
+    int arr[MAX_SIZE];  // Array to store the elements of the circular linked list
+    int front;          // Index of the front (head) of the list
+    int rear;           // Index of the rear (tail) of the list
+    int count;          // Keeps track of the current number of elements in the list
+
+public:
+    // Constructor to initialize the circular linked list
+    CircularLinkedList() {
+        front = -1;
+        rear = -1;
+        count = 0;
+    }
+
+    // Function to check if the list is empty
+    bool isEmpty() {
+        return count == 0;
+    }
+
+    // Function to check if the list is full
+    bool isFull() {
+        return count == MAX_SIZE;
+    }
+
+    // Function to insert an element at the rear (end) of the circular linked list
+    void insertAtRear(int value) {
+        if (isFull()) {
+            cout << "Circular Linked List is full. Cannot insert " << value << endl;
+            return;
+        }
+        if (isEmpty()) {
+            front = 0;
+        }
+        rear = (rear + 1) % MAX_SIZE;
+        arr[rear] = value;
+        count++;
+        cout << value << " inserted at the rear." << endl;
+    }
+
+    // Function to delete an element from the front (beginning) of the circular linked list
+    void deleteFromFront() {
+        if (isEmpty()) {
+            cout << "Circular Linked List is empty. Nothing to delete." << endl;
+            return;
+        }
+        cout << arr[front] << " deleted from the front." << endl;
+        front = (front + 1) % MAX_SIZE;
+        count--;
+    }
+
+    // Function to display the elements of the circular linked list
+    void displayList() {
+        if (isEmpty()) {
+            cout << "Circular Linked List is empty." << endl;
+            return;
+        }
+        cout << "Circular Linked List: ";
+        int i = front;
+        for (int j = 0; j < count; j++) {
+            cout << arr[i] << " ";
+            i = (i + 1) % MAX_SIZE;
+        }
+        cout << endl;
+    }
+
+    // Function to get the front element of the list (without deletion)
+    void getFront() {
+        if (isEmpty()) {
+            cout << "Circular Linked List is empty." << endl;
+            return;
+        }
+        cout << "Front element: " << arr[front] << endl;
+    }
+};
+
+int main() {
+    CircularLinkedList list;
+    int choice, value;
+
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Insert at rear\n";
+        cout << "2. Delete from front\n";
+        cout << "3. Display list\n";
+ 

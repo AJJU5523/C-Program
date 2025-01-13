@@ -1,0 +1,58 @@
+1.Write C/C++ program to store marks scored for first test of subject 'Data Structures and Algorithms' for N students. Compute
+i.The average score of class.
+ii.Highest score and lowest score of class.
+
+
+ #include<iostream>
+ #include<conio.h>
+
+ using namespace std;
+
+ int main()
+ {
+     int n;
+     cout<<"Data Structure and Algorithms marks:"<<endl;
+     cout<<endl;
+     cout<<"Enter how many Store Student marks: ";
+
+     cin>>n;
+
+     int student[n],sum=0;
+
+     for(int i=0; i<n; i++)
+     {
+         cout<<"student "<<i+1<<" = ";
+
+         cin>>student[i];
+         sum=sum+student[i];
+
+     }
+
+
+
+    /* for(int i=0; i<n; i++)
+     {
+         sum=sum+student[i];
+
+
+     }*/
+     cout<<"Avarage of Student Score = "<<sum/n<<endl;
+     int temp=0;
+     for(int i=0; i<n-1; i++)
+     {
+         for (int j=0; j<i-1-n; j++)
+         {
+             if(student[j]>student[j+1])
+                temp=student[j];
+                student[j]=student[i];
+                student[j+1]=temp;
+
+         }
+     }
+     cout<<"Highet score "<<student[n-1]<<endl;
+     cout<<"Lowest score "<<student[0]<<endl;
+
+
+
+     getch();
+ }

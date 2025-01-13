@@ -1,0 +1,190 @@
+14.Write a menu driven program to perform operations on doubly linked list.
+
+#include <iostream>
+using namespace std;
+
+// Node structure for doubly linked list
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+};
+
+// Class for doubly linked list
+class DoublyLinkedList {
+private:
+    Node* head;
+
+public:
+    // Constructor to initialize the head of the list
+    DoublyLinkedList() {
+        head = nullptr;
+    }
+
+    // Function to insert a node at the beginning
+    void insertAtBeginning(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->prev = nullptr;
+        newNode->next = head;
+
+        if (head != nullptr) {
+            head->prev = newNode;
+        }
+
+        head = newNode;
+        cout << "Node inserted at the beginning." << endl;
+    }
+
+    // Function to insert a node at the end
+    void insertAtEnd(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = nullptr;
+
+        if (head == nullptr) {
+            newNode->prev = nullptr;
+            head = newNode;
+            cout << "Node inserted at the end." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+
+        temp->next = newNode;
+        newNode->prev = temp;
+        cout << "Node inserted at the end." << endl;
+    }
+
+    // Function to delete a node from the beginning
+    void deleteFromBeginning() {
+        if (head == nullptr) {
+            cout << "The list is empty, nothing to delete." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        head = head->next;
+
+        if (head != nullptr) {
+            head->prev = nullptr;
+        }
+
+        delete temp;
+        cout << "Node deleted from the beginning." << endl;
+    }
+
+    // Function to delete a node from the end
+    void deleteFromEnd() {
+        if (head == nullptr) {
+            cout << "The list is empty, nothing to delete." << endl;
+            return;
+        }
+
+        if (head->next == nullptr) {
+            delete head;
+            head = nullptr;
+            cout << "Node deleted from the end." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+
+        temp->prev->next = nullptr;
+        delete temp;
+        cout << "Node deleted from the end." << endl;
+    }
+
+    // Function to display the list
+    void displayList() {
+        if (head == nullptr) {
+            cout << "The list is empty." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        cout << "Doubly Linked List: ";
+        while (temp != nullptr) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    // Function to search for an element
+    void searchElement(int value) {
+        if (head == nullptr) {
+            cout << "The list is empty." << endl;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp != nullptr) {
+            if (temp->data == value) {
+                cout << "Element " << value << " found in the list." << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+
+        cout << "Element " << value << " not found in the list." << endl;
+    }
+};
+
+int main() {
+    DoublyLinkedList list;
+    int choice, value;
+
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Insert at beginning\n";
+        cout << "2. Insert at end\n";
+        cout << "3. Delete from beginning\n";
+        cout << "4. Delete from end\n";
+        cout << "5. Display list\n";
+        cout << "6. Search element\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter the value to insert at beginning: ";
+                cin >> value;
+                list.insertAtBeginning(value);
+                break;
+            case 2:
+                cout << "Enter the value to insert at end: ";
+                cin >> value;
+                list.insertAtEnd(value);
+                break;
+            case 3:
+                list.deleteFromBeginning();
+                break;
+            case 4:
+                list.deleteFromEnd();
+                break;
+            case 5:
+                list.displayList();
+                break;
+            case 6:
+                cout << "Enter the element to search: ";
+                cin >> value;
+                list.searchElement(value);
+                break;
+            case 7:
+                cout << "Exiting the program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 7);
+
+    return 0;
+}

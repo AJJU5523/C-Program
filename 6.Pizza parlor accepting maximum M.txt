@@ -1,0 +1,95 @@
+6.Pizza parlor accepting maximum M orders. Orders are served in first come first served basis. Order once placed cannot be cancelled. Write C/C++ program to simulate the system using circular queue using array
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class PizzaParlor {
+    int front, rear;
+    int maxSize;
+    string* orders;
+
+public:
+    // Constructor to initialize the queue
+    PizzaParlor(int size) {
+        maxSize = size;
+        orders = new string[maxSize];
+        front = -1;
+        rear = -1;
+    }
+
+    // Destructor to free memory
+    ~PizzaParlor() {
+        delete[] orders;
+    }
+
+    // Function to check if the queue is full
+    bool isFull() {
+        return (front == 0 && rear == maxSize - 1) || (rear == (front - 1) % (maxSize - 1));
+    }
+
+    // Function to check if the queue is empty
+    bool isEmpty() {
+        return front == -1;
+    }
+
+    // Function to place a new order
+    void placeOrder(string order) {
+        if (isFull()) {
+            cout << "Sorry, the pizza parlor is at full capacity. Cannot place more orders.\n";
+            return;
+        }
+
+        if (front == -1) {
+            front = rear = 0;  // First order
+        } else if (rear == maxSize - 1 && front != 0) {
+            rear = 0;  // Wrap around to the front if the queue is circular
+        } else {
+            rear++;
+        }
+
+        orders[rear] = order;
+        cout << "Order placed: " << order << endl;
+    }
+
+    // Function to serve an order
+    void serveOrder() {
+        if (isEmpty()) {
+            cout << "No orders to serve.\n";
+            return;
+        }
+
+        cout << "Serving order: " << orders[front] << endl;
+
+        if (front == rear) {
+            front = rear = -1;  // Queue becomes empty
+        } else if (front == maxSize - 1) {
+            front = 0;  // Wrap around to the front if the queue is circular
+        } else {
+            front++;
+        }
+    }
+
+    // Function to display all current orders
+    void displayOrders() {
+        if (isEmpty()) {
+            cout << "No orders in the queue.\n";
+            return;
+        }
+
+        cout << "Current Orders: \n";
+        int i = front;
+        while (true) {
+            cout << orders[i] << endl;
+            if (i == rear) break;
+            i = (i + 1) % maxSize;
+        }
+    }
+};
+
+int main() {
+    int maxOrders;
+    cout << "Enter the maximum number of orders the pizza parlor can accept: ";
+    cin >> maxOrders;
+
+    PizzaParlor parl

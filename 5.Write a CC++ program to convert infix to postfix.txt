@@ -1,0 +1,104 @@
+5.Write a C/C++ program to convert infix to Postfix and prefix expression
+
+#include <iostream>
+#include <stack>
+#include <cctype>
+#include <string>
+
+using namespace std;
+
+// Function to check precedence of operators
+int precedence(char op) {
+    if (op == '+' || op == '-') {
+        return 1;
+    }
+    if (op == '*' || op == '/') {
+        return 2;
+    }
+    if (op == '^') {
+        return 3;
+    }
+    return 0;
+}
+
+// Function to check if the character is an operator
+bool isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
+}
+
+// Function to perform the infix to postfix conversion
+string infixToPostfix(string infix) {
+    stack<char> operators;
+    string postfix = "";
+    for (char &ch : infix) {
+        if (isdigit(ch)) {
+            postfix += ch; // Add operand to postfix expression
+        } else if (ch == '(') {
+            operators.push(ch); // Push opening bracket to stack
+        } else if (ch == ')') {
+            // Pop operators from stack until '(' is found
+            while (!operators.empty() && operators.top() != '(') {
+                postfix += operators.top();
+                operators.pop();
+            }
+            operators.pop(); // Pop '('
+        } else if (isOperator(ch)) {
+            // Pop operators from stack to postfix if they have higher or equal precedence
+            while (!operators.empty() && precedence(operators.top()) >= precedence(ch)) {
+                postfix += operators.top();
+                operators.pop();
+            }
+            operators.push(ch); // Push current operator to stack
+        }
+    }
+    // Pop any remaining operators in the stack
+    while (!operators.empty()) {
+        postfix += operators.top();
+        operators.pop();
+    }
+    return postfix;
+}
+
+// Function to reverse the string (used for prefix conversion)
+string reverseString(string str) {
+    int n = str.length();
+    for (int i = 0; i < n / 2; i++) {
+        swap(str[i], str[n - i - 1]);
+    }
+    return str;
+}
+
+// Function to convert infix to prefix
+string infixToPrefix(string infix) {
+    // Reverse the infix expression
+    infix = reverseString(infix);
+
+    // Swap parentheses
+    for (int i = 0; i < infix.length(); i++) {
+        if (infix[i] == '(') {
+            infix[i] = ')';
+        } else if (infix[i] == ')') {
+            infix[i] = '(';
+        }
+    }
+
+    // Convert the reversed infix to postfix
+    string postfix = infixToPostfix(infix);
+
+    // Reverse the postfix expression to get the prefix
+    return reverseString(postfix);
+}
+
+int main() {
+    string infix;
+    cout << "Enter an infix expression: ";
+    cin >> infix;
+
+    string postfix = infixToPostfix(infix);
+    string prefix = infixToPrefix(infix);
+
+    cout << "Postfix Expression: " << postfix << endl;
+    cout << "Prefix Expression: " << prefix << endl;
+
+    return 0;
+}
